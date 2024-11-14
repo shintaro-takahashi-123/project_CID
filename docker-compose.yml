@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    environment:
+      - DATABASE_URL=postgresql://pi:pi@db:5432/cid_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: pi
+      POSTGRES_PASSWORD: pi
+      POSTGRES_DB: cid_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
